@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RYUWANSHOY - Digital Artist</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    @keyframes pulse-slow {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+    
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes fade-in-left {
+      from { transform: translateX(-20px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes fade-in-right {
+      from { transform: translateX(20px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    .animate-spin-slow { animation: spin 8s linear infinite; }
+    .animate-float { animation: float 6s ease-in-out infinite; }
+    .animate-pulse-slow { animation: pulse-slow 4s ease-in-out infinite; }
+    .animate-fade-in { animation: fade-in 0.7s ease-out forwards; }
+    .animate-fade-in-left { animation: fade-in-left 0.5s ease forwards; }
+    .animate-fade-in-right { animation: fade-in-right 0.5s ease forwards; }
+    
+    .animate-delay-100 { animation-delay: 100ms; }
+    .animate-delay-200 { animation-delay: 200ms; }
+    .animate-delay-300 { animation-delay: 300ms; }
+    .animate-delay-400 { animation-delay: 400ms; }
+    .animate-delay-500 { animation-delay: 500ms; }
+    
+    .glass-card {
+      background-color: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 0.75rem;
+    }
+    
+    .nav-link {
+      position: relative;
+      padding: 0.5rem 0.75rem;
+      color: rgba(240, 244, 248, 0.8);
+      transition: color 0.3s ease;
+    }
+    
+    .nav-link:hover {
+      color: rgb(240, 244, 248);
+    }
+    
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: #FF5D3A;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease;
+    }
+    
+    .nav-link:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+    
+    body {
+      background-color: #0A0F1C;
+      color: #F0F4F8;
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body class="min-h-screen overflow-x-hidden">
+  <!-- Animated Background Shapes -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="absolute top-1/4 -left-32 w-64 h-64 rounded-full bg-blue-500/10 animate-float blur-3xl"></div>
+    <div class="absolute top-2/3 -right-48 w-96 h-96 rounded-full bg-orange-500/10 animate-float animate-delay-500 blur-3xl"></div>
+    <div class="absolute top-1/2 left-1/4 w-40 h-40 rotate-45 bg-blue-500/5 animate-spin-slow blur-2xl"></div>
+    <div class="absolute bottom-1/4 right-1/3">
+      <div class="w-0 h-0 border-l-[50px] border-r-[50px] border-b-[86px] border-l-transparent border-r-transparent border-b-orange-500/5 animate-pulse-slow blur-xl"></div>
+    </div>
+    <div class="absolute top-1/3 right-1/4 w-8 h-8 rounded-full bg-blue-500/20 animate-pulse-slow blur-sm"></div>
+    <div class="absolute bottom-1/3 left-1/3 w-6 h-6 rounded-full bg-orange-500/20 animate-float animate-delay-500 blur-sm"></div>
+    <div class="absolute top-1/2 right-1/2 w-12 h-12 rounded-full bg-white/10 animate-float animate-delay-300 blur-md"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-6" id="header">
+    <div class="container mx-auto px-6 flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5D3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+        <h1 class="text-2xl font-bold text-white">RYUWANSHOY</h1>
+      </div>
+      
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex items-center space-x-8">
+        <a href="#profile" class="nav-link">Home</a>
+        <a href="#gallery" class="nav-link">Gallery</a>
+        <a href="#commissions" class="nav-link">Commissions</a>
+        <a href="#pricing" class="nav-link">Pricing</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </nav>
+      
+      <!-- Mobile menu button -->
+      <button id="menu-toggle" class="md:hidden p-2 rounded-md text-white hover:bg-white/10 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="menu-icon"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden" id="close-icon"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+    
+    <!-- Mobile Navigation -->
+    <nav id="mobile-menu" class="hidden md:hidden absolute top-full left-0 right-0 bg-[#0A0F1C]/95 backdrop-blur-lg shadow-lg py-4 px-6 border-t border-white/10 animate-fade-in">
+      <div class="flex flex-col space-y-4">
+        <a href="#profile" class="text-lg py-2 px-4 hover:bg-white/5 rounded-md transition-colors">Home</a>
+        <a href="#gallery" class="text-lg py-2 px-4 hover:bg-white/5 rounded-md transition-colors">Gallery</a>
+        <a href="#commissions" class="text-lg py-2 px-4 hover:bg-white/5 rounded-md transition-colors">Commissions</a>
+        <a href="#pricing" class="text-lg py-2 px-4 hover:bg-white/5 rounded-md transition-colors">Pricing</a>
+        <a href="#contact" class="text-lg py-2 px-4 hover:bg-white/5 rounded-md transition-colors">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Profile Section (Instagram-like) -->
+  <section id="profile" class="pt-32 pb-12 px-6 relative">
+    <div class="container mx-auto max-w-4xl">
+      <div class="flex flex-col md:flex-row items-center justify-center gap-8 animate-fade-in">
+        <!-- Profile Image with Animated Border -->
+        <div class="relative group">
+          <div class="absolute -inset-1 bg-gradient-to-r from-orange-500 via-blue-500 to-purple-500 rounded-full opacity-75 group-hover:opacity-100 blur animate-spin-slow"></div>
+          <div class="relative h-48 w-48 rounded-full overflow-hidden border-4 border-[#0A0F1C]">
+            <img src="profile-image.jpg" alt="RYUWANSHOY" class="w-full h-full object-cover">
+          </div>
+        </div>
+        
+        <!-- Profile Info -->
+        <div class="flex flex-col items-center md:items-start">
+          <h1 class="text-4xl font-bold mb-3">RYUWANSHOY</h1>
+          <p class="text-white/80 text-lg mb-4 max-w-md text-center md:text-left">
+            Digital Artist • Character Design
+          </p>
+          
+          <div class="flex space-x-4 mb-6">
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-2 bg-white/5 hover:bg-white/10 px-4 py-2 rounded-full transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5D9CEC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>
+              <span>Twitter</span>
+            </a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-2 bg-white/5 hover:bg-white/10 px-4 py-2 rounded-full transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF5D3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+              <span>Instagram</span>
+            </a>
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-2 bg-white/5 hover:bg-white/10 px-4 py-2 rounded-full transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5D9CEC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+              <span>Facebook</span>
+            </a>
+          </div>
+          
+          <div class="glass-card p-4 w-full">
+            <h2 class="font-bold mb-2">About Me</h2>
+            <p class="text-white/80 text-sm">
+              Digital artist specializing in character illustrations and design sheets. 
+              College student passionate about bringing characters to life through digital art.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Art Gallery -->
+  <section id="gallery" class="py-16 px-6 relative">
+    <div class="container mx-auto max-w-6xl">
+      <div class="text-center mb-10 animate-fade-in">
+        <h2 class="text-3xl font-bold mb-3">My Digital Creations</h2>
+        <p class="text-white/70 max-w-2xl mx-auto">
+          A showcase of my digital artwork and character designs. Each piece represents hours of creative passion.
+        </p>
+      </div>
+      
+      <!-- Gallery filter -->
+      <div class="flex flex-wrap justify-center gap-3 mb-12 animate-fade-in animate-delay-300">
+        <button class="category-btn px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors active" data-category="All">All</button>
+        <button class="category-btn px-4 py-2 rounded-full bg-white/5 hover:bg-white/20 transition-colors" data-category="Character">Character</button>
+        <button class="category-btn px-4 py-2 rounded-full bg-white/5 hover:bg-white/20 transition-colors" data-category="Illustration">Illustration</button>
+      </div>
+      
+      <!-- Gallery grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 animate-fade-in animate-delay-400" id="gallery-grid">
+        <!-- Gallery items will be added here via JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Commission Details -->
+  <section id="commissions" class="py-16 px-6 bg-white/5">
+    <div class="container mx-auto max-w-4xl">
+      <div class="text-center mb-10 animate-fade-in">
+        <h2 class="text-3xl font-bold mb-3">Commission Details</h2>
+      </div>
+      
+      <div class="glass-card p-6 mb-8 animate-fade-in animate-delay-100">
+        <p class="mb-4">
+          Hello! If you would like to commission me.. Here are some details first :b
+          I am open for some inappropriate works but not for inappropriate behavior so please respect boundaries.
+        </p>
+        <p class="mb-4">
+          Being a college student at the moment, I may not be available to work on commissions or so due to assignments and events. 
+          But I will still be opening slots or giving updates whether I would be able to start working again.
+        </p>
+        <p>
+          Process of contact or payment would be seen at the end of this slides.
+        </p>
+      </div>
+      
+      <div class="glass-card p-6 mb-8 animate-fade-in animate-delay-200">
+        <h3 class="text-xl font-bold mb-4">Available Works at the moment</h3>
+        
+        <h4 class="text-lg font-semibold mb-2">Character Illustrations (no background)</h4>
+        <ul class="list-disc list-inside ml-4 mb-6 space-y-1">
+          <li>HEADSHOT</li>
+          <li>HALF-BODY</li>
+          <li>THIGH-UP</li>
+          <li>FULL-BODY</li>
+          <li>SFW ILLUSTRATION with BG</li>
+          <li>NSFW ILLUSTRATION with BG</li>
+        </ul>
+        
+        <p class="mb-4 italic text-white/80">
+          Before requesting a illustration with background, please provide references, and angles you'd prefer (photography pics would help a lot!)
+        </p>
+        
+        <h4 class="text-lg font-semibold mb-2 mt-6">Character Design Sheet</h4>
+        <p class="mb-4">
+          CHARACTER DESIGN SHEETS ARE RENDERED FIXED (flat colored background could be included)
+          I could conceptualize your Original Character ideas onto these sort of templates)
+        </p>
+      </div>
+      
+      <div class="glass-card p-6 mb-8 animate-fade-in animate-delay-300">
+        <h3 class="text-xl font-bold mb-4">Terms of Service</h3>
+        <ul class="list-disc list-inside ml-4 space-y-2">
+          <li>This is a DIGITAL COMMISSION, which my services are only through digital means.</li>
+          <li>I reserve the rights to the commissioned work which means these are only for personal-use and are not meant to be commercialized unless received conditions :b</li>
+          <li>Mode of payment I currently accept is PayPal and GCash (Philippines)</li>
+          <li>In terms of estimated time it takes for me to create a work could be done in a day or in a week or maybe a month (super rare) depending on the situation I am at. (busy with college works or at events)</li>
+          <li>Refunds are issued if I were to fail on submitting a finished work on agreed time.</li>
+          <li>I have the right to decline/refuse a request.</li>
+        </ul>
+      </div>
+      
+      <div class="glass-card p-6 mb-8 animate-fade-in animate-delay-400">
+        <h3 class="text-xl font-bold mb-4">Process and Procedures</h3>
+        <ul class="list-disc list-inside ml-4 space-y-2">
+          <li>Contact me on either Twitter, Pixiv, or Discord (ryuwanshoy#3101)</li>
+          <li>Once a request has been submitted and accepted by me, please pay upfront first before the sketch starts.</li>
+          <li>Progress updates could be asked if I forgor</li>
+          <li>Revisions are not allowed once started rendering unless it actually is a big deal in which yeah maybe I could do some twinning</li>
+        </ul>
+      </div>
+      
+      <div class="glass-card p-6 animate-fade-in animate-delay-500">
+        <h3 class="text-xl font-bold mb-4">Discouraged works that I won't be drawing</h3>
+        <ul class="list-disc list-inside ml-4 space-y-2">
+          <li>SUPER Heavy NSFW (segs are allowed but not those intense once)</li>
+          <li>Heavy Mecha (them big ones but I could draw those simpler designs if requested)</li>
+          <li>Designs that are too complex</li>
+          <li>Gore in General</li>
+          <li>Real people doing those* sort of kinks (unless consented by that individual)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing" class="py-16 px-6">
+    <div class="container mx-auto max-w-6xl">
+      <div class="text-center mb-12 animate-fade-in">
+        <h2 class="text-3xl font-bold mb-3">Pricing</h2>
+        <p class="text-white/70 max-w-2xl mx-auto">(subject to change :b)</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+        <!-- Character Illustrations (no bg) -->
+        <div class="glass-card p-6 transition-transform hover:scale-[1.02] animate-fade-in animate-delay-100">
+          <h3 class="text-xl font-bold mb-4 text-center">Character Illustrations (no bg)</h3>
+          <ul class="space-y-4 mb-6">
+            <li class="flex justify-between items-center p-2 rounded hover:bg-white/5 cursor-pointer commission-item" data-image="headshot.jpg">
+              <span>HEADSHOT</span>
+              <span class="font-bold">$35</span>
+            </li>
+            <li class="flex justify-between items-center p-2 rounded hover:bg-white/5 cursor-pointer commission-item" data-image="halfbody.jpg">
+              <span>HALFBODY</span>
+              <span class="font-bold">$60</span>
+            </li>
+            <li class="flex justify-between items-center p-2 rounded hover:bg-white/5 cursor-pointer commission-item" data-image="thighup.jpg">
+              <span>THIGH-UP</span>
+              <span class="font-bold">$70</span>
+            </li>
+            <li class="flex justify-between items-center p-2 rounded hover:bg-white/5 cursor-pointer commission-item" data-image="fullbody.jpg">
+              <span>FULLBODY</span>
+              <span class="font-bold">$80</span>
+            </li>
+          </ul>
+          <p class="text-sm text-white/70">
+            Additional characters in the illustration would be dependent on how the character would be displayed. TWO full bodies would be $80+$80
+          </p>
+        </div>
+        
+        <!-- Character Illustrations (with bg) -->
+        <div class="glass-card p-6 transition-transform hover:scale-[1.02] animate-fade-in animate-delay-200">
+          <h3 class="text-xl font-bold mb-4 text-center">Character Illustrations (with bg)</h3>
+          <ul class="space-y-4 mb-6">
+            <li class="flex justify-between items-center p-2 rounded hover:bg-white/5 cursor-pointer commission-item" data-image="sfw-bg.jpg">
+              <span>SFW with BG</span>
+              <span class="font-bold">$150</span>
+            </li>
+            <li class="flex justify-between items-center p-2 rounded hover:bg-white/5 cursor-pointer commission-item" data-image="nsfw-bg.jpg">
+              <span>NSFW with BG</span>
+              <span class="font-bold">$175</span>
+            </li>
+          </ul>
+          <p class="text-sm text-white/70">
+            Additional per characters in the illustration would be +$20
+          </p>
+        </div>
+        
+        <!-- Character Design Sheet -->
+        <div class="glass-card p-6 transition-transform hover:scale-[1.02] animate-fade-in animate-delay-300">
+          <h3 class="text-xl font-bold mb-4 text-center">Character Design Sheet</h3>
+          <div class="relative aspect-[3/4] mb-6 overflow-hidden rounded-md">
+            <div class="design-slider">
+              <img src="design1.jpg" alt="Design Sheet Example 1" class="w-full h-full object-cover">
+              <img src="design2.jpg" alt="Design Sheet Example 2" class="w-full h-full object-cover hidden">
+            </div>
+            <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+              <button class="slider-dot w-3 h-3 rounded-full bg-white/50 active"></button>
+              <button class="slider-dot w-3 h-3 rounded-full bg-white/20"></button>
+            </div>
+          </div>
+          <div class="flex justify-between items-center p-2">
+            <span>Design Sheet</span>
+            <span class="font-bold">$210</span>
+          </div>
+          <p class="text-sm text-white/70 mt-4">
+            Current Fixed PRICE for Design Sheets are now $210, May be increased due to complexity of the design given.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-16 px-6 bg-white/5">
+    <div class="container mx-auto max-w-4xl">
+      <div class="text-center mb-10 animate-fade-in">
+        <h2 class="text-3xl font-bold mb-3">Contact Me</h2>
+        <p class="text-white/70 max-w-2xl mx-auto">
+          Interested in commissioning me? Get in touch through my social media platforms.
+        </p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-2xl mx-auto">
+        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="glass-card p-6 flex flex-col items-center justify-center text-center transition-transform hover:scale-105 animate-fade-in animate-delay-100">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#5D9CEC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mb-4"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>
+          <h3 class="font-bold mb-1">Twitter</h3>
+          <p class="text-sm text-white/70">Follow updates and message me</p>
+        </a>
+        
+        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="glass-card p-6 flex flex-col items-center justify-center text-center transition-transform hover:scale-105 animate-fade-in animate-delay-200">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FF5D3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mb-4"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+          <h3 class="font-bold mb-1">Instagram</h3>
+          <p class="text-sm text-white/70">See daily art posts and updates</p>
+        </a>
+        
+        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="glass-card p-6 flex flex-col items-center justify-center text-center transition-transform hover:scale-105 animate-fade-in animate-delay-300">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#5D9CEC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mb-4"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+          <h3 class="font-bold mb-1">Facebook</h3>
+          <p class="text-sm text-white/70">Connect with me on Facebook</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-12 px-6 border-t border-white/10">
+    <div class="container mx-auto max-w-6xl">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="flex items-center mb-6 md:mb-0">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5D3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+          <span class="text-xl font-bold">RYUWANSHOY</span>
+        </div>
+        
+        <div class="flex items-center space-x-4">
+          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors" aria-label="Twitter">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>
+          </a>
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors" aria-label="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+          </a>
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors" aria-label="Facebook">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+          </a>
+        </div>
+      </div>
+      
+      <div class="mt-8 text-center text-white/60 text-sm">
+        <p>© <span id="current-year"></span> RYUWANSHOY. All rights reserved.</p>
+        <p class="mt-2">Digital art commissions for personal use only unless otherwise specified.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Image Preview Modal -->
+  <div id="image-modal" class="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center hidden">
+    <div class="relative max-w-4xl w-full mx-6">
+      <img id="preview-image" src="" alt="Preview" class="w-full max-h-[80vh] object-contain rounded-lg">
+      <button id="close-modal" class="absolute top-4 right-4 p-2 bg-black/50 rounded-full text-white hover:bg-black/70 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Gallery data
+    const galleryItems = [
+      { id: 1, type: 'Character', title: 'Character Sample 1', url: 'character1.jpg' },
+      { id: 2, type: 'Character', title: 'Character Sample 2', url: 'character2.jpg' },
+      { id: 3, type: 'Illustration', title: 'Illustration Sample 1', url: 'illustration1.jpg' },
+      { id: 4, type: 'Illustration', title: 'Illustration Sample 2', url: 'illustration2.jpg' },
+    ];
+
+    // Current year in footer
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    // Header scroll effect
+    window.addEventListener('scroll', () => {
+      const header = document.getElementById('header');
+      if (window.scrollY > 20) {
+        header.classList.replace('py-6', 'py-3');
+        header.classList.add('bg-[#0A0F1C]/90', 'backdrop-blur-lg', 'shadow-lg');
+      } else {
+        header.classList.replace('py-3', 'py-6');
+        header.classList.remove('bg-[#0A0F1C]/90', 'backdrop-blur-lg', 'shadow-lg');
+      }
+    });
+
+    // Mobile menu toggle
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('menu-icon');
+    const closeIcon = document.getElementById('close-icon');
+
+    menuToggle.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      menuIcon.classList.toggle('hidden');
+      closeIcon.classList.toggle('hidden');
+    });
+
+    // Close mobile menu when clicking on links
+    document.querySelectorAll('#mobile-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        menuIcon.classList.remove('hidden');
+        closeIcon.classList.add('hidden');
+      });
+    });
+
+    // Gallery filter
+    const galleryGrid = document.getElementById('gallery-grid');
+    const categoryButtons = document.querySelectorAll('.category-btn');
+
+    // Populate gallery with items
+    function populateGallery(items) {
+      galleryGrid.innerHTML = '';
+      
+      items.forEach(item => {
+        const galleryItem = document.createElement('div');
+        galleryItem.className = 'relative group overflow-hidden rounded-xl aspect-square';
+        galleryItem.innerHTML = `
+          <img src="${item.url}" alt="${item.title}" class="w-full h-full object-cover transition-transform group-hover:scale-110">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+            <div>
+              <h3 class="text-white font-bold">${item.title}</h3>
+              <p class="text-white/80 text-sm">${item.type}</p>
+            </div>
+          </div>
+        `;
+        
+        galleryItem.addEventListener('click', () => {
+          document.getElementById('preview-image').src = item.url;
+          document.getElementById('image-modal').classList.remove('hidden');
+        });
+        
+        galleryGrid.appendChild(galleryItem);
+      });
+    }
+
+    // Initial gallery population
+    populateGallery(galleryItems);
+
+    // Filter gallery by category
+    categoryButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Update active button
+        categoryButtons.forEach(btn => {
+          btn.classList.remove('bg-white/10', 'active');
+          btn.classList.add('bg-white/5');
+        });
+        button.classList.remove('bg-white/5');
+        button.classList.add('bg-white/10', 'active');
+        
+        const category = button.getAttribute('data-category');
+        
+        if (category === 'All') {
+          populateGallery(galleryItems);
+        } else {
+          const filteredItems = galleryItems.filter(item => item.type === category);
+          populateGallery(filteredItems);
+        }
+      });
+    });
+
+    // Character design slider
+    const sliderDots = document.querySelectorAll('.slider-dot');
+    const sliderImages = document.querySelectorAll('.design-slider img');
+    
+    sliderDots.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        // Update active dot
+        sliderDots.forEach(d => {
+          d.classList.remove('bg-white/50', 'active');
+          d.classList.add('bg-white/20');
+        });
+        dot.classList.remove('bg-white/20');
+        dot.classList.add('bg-white/50', 'active');
+        
+        // Show corresponding image
+        sliderImages.forEach(img => img.classList.add('hidden'));
+        sliderImages[index].classList.remove('hidden');
+      });
+    });
+
+    // Commission item preview
+    const commissionItems = document.querySelectorAll('.commission-item');
+    const imageModal = document.getElementById('image-modal');
+    const previewImage = document.getElementById('preview-image');
+    const closeModal = document.getElementById('close-modal');
+    
+    commissionItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const imageSrc = item.getAttribute('data-image');
+        previewImage.src = imageSrc;
+        imageModal.classList.remove('hidden');
+      });
+    });
+    
+    closeModal.addEventListener('click', () => {
+      imageModal.classList.add('hidden');
+    });
+    
+    // Close modal when clicking outside the image
+    imageModal.addEventListener('click', (e) => {
+      if (e.target === imageModal) {
+        imageModal.classList.add('hidden');
+      }
+    });
+    
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          window.scrollTo({
+            top: target.getBoundingClientRect().top + window.scrollY - 100,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
